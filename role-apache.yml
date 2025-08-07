@@ -1,0 +1,14 @@
+---
+- name: Testando Role Apache
+  hosts: test
+
+  vars:
+    pkg:
+      - httpd
+      - firewalld
+
+    svc:
+      - httpd
+      - firewalld
+  roles:
+    - apache

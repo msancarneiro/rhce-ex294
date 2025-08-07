@@ -1,0 +1,26 @@
+---
+- name: Questao3
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Instala pacotes
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop: 
+          - httpd
+          - mariadb
+      when:
+          inventory_hostname in groups['dev'] or inventory_hostname in groups['test'] or inventory_hostname in groups['prod']
+    
+    - name: Instala Grupo de pacotes RPM
+      yum:
+        name: "@RPM Development Tools"
+
+        state: present
+
+    - name: Atualiza todos os pacotes para versão mais recente dev
+      yum:
+        name: "*"
+        state: latest         

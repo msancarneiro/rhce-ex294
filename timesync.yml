@@ -1,0 +1,9 @@
+---
+- name: Questao4
+  hosts: all
+  vars:
+    timesync_ntp_servers:
+        - hostname: 200.160.0.8
+          iburst: true
+  roles:
+      - rhel-system-roles.timesync

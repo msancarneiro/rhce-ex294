@@ -1,0 +1,7 @@
+---
+- src: /home/student/ansible/zabbix-zabbix-1.0.6.tar.gz
+  name: zabbix
+- src: /home/student/ansible/openafs_contrib-openafs-1.9.0.tar.gz
+  name: openfs
+- src: /home/student/ansible/mafalb-squid-0.2.0.tar.gz
+  name: squid

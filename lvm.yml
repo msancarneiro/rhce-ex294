@@ -1,0 +1,37 @@
+- hosts: all
+  tasks:
+    - name: Verificação
+      block:
+            - name: Cria LVM de 1200m
+              lvol: 
+                vg: research
+                lv: data
+                size: 1200m
+              when: 'ansible_lvm.vgs.research.size_g > "1200 MiB"'
+              notify: Formata EXT4
+
+
+            - name: Cria LVM de 800m
+              lvol:
+                vg: research
+                lv: data
+                size: 100m
+              when: 'ansible_lvm.vgs.research.size_g < "1200 MiB"'
+              notify: Formata EXT4
+
+      
+      when: ansible_lvm.vgs.research is defined
+      rescue:
+        - name: Debug caso VG falhe
+          debug:
+            msg: "Sem espaço de 800m no VG" 
+          when: 'ansible_lvm.vgs.research.size_g < "1200 MiB"'
+
+
+
+  handlers:
+    - name: Formata EXT4
+      filesystem:
+        fstype: ext4
+        dev: /dev/research/data
+

@@ -1,0 +1,6 @@
+127.0.0.1 localhost {{ ansible_facts['fqdn'] }}
+::1 localhost {{ ansible_facts['fqdn']}}
+192.168.1.100 controlnode
+{% for x in groups['all'] %}
+{{hostvars[x]['ansible_facts']['default_ipv4']['address']}} {{hostvars[x]['ansible_facts']['fqdn']}} {{hostvars[x]['ansible_facts']['hostname']}}
+{% endfor %}

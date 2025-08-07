@@ -1,0 +1,16 @@
+---
+- name: Criando Crontab
+  hosts: all
+
+  tasks:
+    - name: Criando user natasha
+      user:
+        name: natasha
+        state: present
+
+    - name: Criando cron
+      cron:
+        name: Cronjob Natasha
+        minute: "*/2"
+        user: natasha
+        job: 'logger "EX294 exam in progess"'

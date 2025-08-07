@@ -1,0 +1,26 @@
+---
+# tasks file for apache
+- name: Install pacotes
+  yum:
+    name: "{{ item }}"
+    state: latest
+  loop: "{{ pkg }}"
+
+- name: Habilitando serviço HTTPD
+  service:
+    name: "{{ item }}"
+    state: started
+    enabled: true
+  loop: "{{ svc }}"
+
+- name: Habilitando serviço firewalld
+  firewalld:
+    service: http
+    state: enabled
+    permanent: true
+    immediate: true
+
+- name: Criando template
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html

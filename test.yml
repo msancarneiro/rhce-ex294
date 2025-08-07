@@ -1,0 +1,27 @@
+---
+- name: Questao8
+  hosts: test
+
+  tasks:
+    - name: Add Group
+      group:
+        name: webtest
+        state: present
+
+    - name: Criando webtest
+      file:
+        path: /webtest
+        group: webtest
+        state: directory
+        mode: 2775
+
+    - name: Criando link limbolico
+      file:
+        src: /webtest
+        dest: /var/www/html/webtest
+        state: link
+
+    - name: Criando index.html
+      copy:
+        dest: /webtest/index.html
+        content: "Testing"

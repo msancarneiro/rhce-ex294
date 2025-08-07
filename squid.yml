@@ -1,0 +1,6 @@
+---
+- name: Rodar roles squid questao
+  hosts: balancers
+
+  roles:
+    - squid

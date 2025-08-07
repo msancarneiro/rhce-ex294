@@ -1,0 +1,9 @@
+---
+- name: Gerando hosts
+  hosts: all
+
+  tasks:
+    - name: Gerando templates
+      template:
+        src: directory/hosts.j2
+        dest: /etc/hosts

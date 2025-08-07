@@ -1,0 +1,48 @@
+---
+- name: Questao14-a
+  hosts: dev,test
+
+  vars_files:
+      - /home/student/ansible/vault.yml
+      - /home/student/ansible/user_list.yml
+
+  tasks:
+    - name: Criando grupos
+      group:
+        name: devops
+        state: present
+    - name: Criando usuarios
+      user:
+        name: "{{ item.name }}"
+        group: devops
+        password: "{{ dev_pass | password_hash('sha512')  }}"
+        uid: "{{ item.uid }}"
+        password_expire_max: 30
+      when:
+          item.job == "developer"
+      loop: "{{ users }}"
+
+- name: Questao14-b
+  hosts: prod
+
+  vars_files:
+      - /home/student/ansible/vault.yml
+      - /home/student/ansible/user_list.yml
+
+  tasks:
+    - name: Criando Grupos
+      group:
+        name: opsmgr
+        state: present
+    
+    - name: Criando usuarios
+      user:
+        name: "{{ item.name }}"
+        group: opsmgr 
+        password: "{{ dev_pass | password_hash('sha512')  }}"
+        uid: "{{ item.uid }}"
+        password_expire_max: 30
+      when:
+          item.job == "manager"
+      loop: "{{ users }}"
+
