@@ -1,0 +1,42 @@
+---
+- name: Questao17
+  hosts: all
+
+  tasks:
+      - name: Verificando
+        block:
+          - name: Criar partição sda1 
+            parted:
+              device: /dev/sdb
+              number: 1
+              part_end: 1200MiB
+              state: present
+            when: '"sdb" in ansible_devices'
+            notify: Formata EXT4
+
+        rescue:
+          - name: Se não houver espaço
+            debug: 
+              msg: "Não há espaço no disco"
+          - name: Criando partição de 800m
+            parted:
+              device: /dev/sdb
+              number: 1
+              state: present
+            when: "'sdb' in ansible_devices"
+            notify: Fortmata EXT4
+        always:
+          - name: Montar se por prd
+            mount:
+              path: /srv
+              src: /dev/sdb1
+              fstype: ext4
+              state: mounted
+            when: inventory_hostname in groups['prod']
+
+
+  handlers:
+    - name: Formata EXT4
+      filesystem:
+        fstype: ext4
+        dev: /dev/sdb1
